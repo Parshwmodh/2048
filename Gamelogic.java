@@ -2,17 +2,30 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Gamelogic{
-
+    
     public class Score{
         public static int score = 0;
         public static boolean  isMoves = false;
         public static int Moves = 0;
     }
 
-    // public static isGameOver(int[][] mat_pos){
-    //     int[][] d_mat_pos = new int[5][5];
-    //     for
-    // }
+    public static int isGameOver(Board matrix){
+        int[][] tmat_pos = matrix.getMat_pos();
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                if(tmat_pos[i][j] == 2048){
+                    return 1;
+                }
+
+                if(tmat_pos[i][j] == tmat_pos[i][j+1]){
+                    return 2;
+                }else if(tmat_pos[j][i] == tmat_pos[j+1][i]){
+                    return 2;
+                }
+            }
+        }
+        return 3;
+    }
 
     public static void zeroRemover(int[] t_arr){
         for(int i=0;i<4;i++){
@@ -30,8 +43,7 @@ public class Gamelogic{
         }
     }
 
-    public static void merger(int[] t_arr, int[][] mat_pos){
-
+    public static void merger(int[] t_arr){
         for(int i=0;i<4;i++){
             if(t_arr[i] != 0 && t_arr[i] == t_arr[i+1]){
                 t_arr[i] *= 2;
@@ -41,123 +53,145 @@ public class Gamelogic{
         }
     }
 
-    public static void swipeUp(int[][] mat_pos){
+    public static void swipeUp(int[][] tmat_pos){
         int[] t_arr = new int[5];
 
         for(int j=0;j<5;j++){
             for(int i=0;i<5;i++){
-                t_arr[i] = mat_pos[i][j];
+                t_arr[i] = tmat_pos[i][j];
             }
             zeroRemover(t_arr);
-            merger(t_arr, mat_pos);
+            merger(t_arr);
             zeroRemover(t_arr);
 
             for(int i=0;i<5;i++){
-                mat_pos[i][j] = t_arr[i];
+                tmat_pos[i][j] = t_arr[i];
             }
         }
         if(Score.isMoves){
             Score.Moves++;
         }Score.isMoves = false;
     }
-    public static void swipeDown(int[][] mat_pos){
+
+    public static void swipeDown(int[][] tmat_pos){
         int[] t_arr = new int[5];
 
         for(int j=0;j<5;j++){
             for(int i=0;i<5;i++){
-                t_arr[4-i] = mat_pos[i][j];
+                t_arr[4-i] = tmat_pos[i][j];
             } 
             zeroRemover(t_arr);
-            merger(t_arr, mat_pos);
+            merger(t_arr);
             zeroRemover(t_arr);
 
             for(int i=0;i<5;i++){
-                mat_pos[i][j] = t_arr[4-i];
+                tmat_pos[i][j] = t_arr[4-i];
             }
         }if(Score.isMoves){
             Score.Moves++;
         }Score.isMoves = false;
     }
 
-    public static void swipeLeft(int[][] mat_pos){
+    public static void swipeLeft(int[][] tmat_pos){
         int[] t_arr = new int[5];
 
         for(int i=0;i<5;i++){
-            System.arraycopy(mat_pos[i], 0, t_arr, 0, 5);
+            System.arraycopy(tmat_pos[i], 0, t_arr, 0, 5);
             zeroRemover(t_arr);
-            merger(t_arr, mat_pos);
+            merger(t_arr);
             zeroRemover(t_arr);
 
-            System.arraycopy(t_arr, 0, mat_pos[i], 0, 5);
+            System.arraycopy(t_arr, 0, tmat_pos[i], 0, 5);
         }if(Score.isMoves){
             Score.Moves++;
         }Score.isMoves = false;
     }
 
-    public static void swipeRight(int[][] mat_pos){
+    public static void swipeRight(int[][] tmat_pos){
         int[] t_arr = new int[5];
 
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
-                t_arr[4-j] = mat_pos[i][j];
+                t_arr[4-j] = tmat_pos[i][j];
             }
             zeroRemover(t_arr);
-            merger(t_arr, mat_pos);
+            merger(t_arr);
             zeroRemover(t_arr);
             for(int j=0;j<5;j++){
-                mat_pos[i][j] = t_arr[4-j];
+                tmat_pos[i][j] = t_arr[4-j];
             }
         }if(Score.isMoves){
             Score.Moves++;
         }Score.isMoves = false;
     }
 
-    public static void direction(int[][] mat_pos){
+    public static void direction(Board matrix){
+        if(isGameOver(matrix) == 1){
+            System.out.print("\n\n\t CONGRATS YOU REACHED 2048!!! \n\n");
+            System.exit(0);
+        }else if(isGameOver(matrix) == 3){
+            System.out.print("\n\n\tYOU HAVE NO MORE MOVES LEFT, SORRY!!!\n\n");
+            System.exit(0);
+        }
+        
         Scanner scanner = new Scanner(System.in);
         System.out.print("Swipe in? : ");
         String direc = scanner.nextLine().toUpperCase();
+        int[][] tmat_pos = matrix.getMat_pos();
         if(direc != null){
             switch(direc) {
-                case "W" -> swipeUp(mat_pos);
-                case "S" -> swipeDown(mat_pos);
-                case "A" -> swipeLeft(mat_pos);
-                case "D" -> swipeRight(mat_pos);
+                case "W" -> swipeUp(tmat_pos);
+                case "S" -> swipeDown(tmat_pos);
+                case "A" -> swipeLeft(tmat_pos);
+                case "D" -> swipeRight(tmat_pos);
                 default -> {
                     throw new AssertionError();
                 }
             }
         }
+        matrix.setMat_pos(tmat_pos);
     }
 
-    public static void display(int[][] mat_pos) {
+    public static void display(Board matrix) {
+        matrix.setScore(Score.score);
+        if(Score.Moves == (matrix.getMoves()+1)){
+            matrix.setMoves(Score.Moves);
+            ran_pos(matrix);
+        }
+        int[][] tmat_pos = matrix.getMat_pos();
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                System.out.print(mat_pos[i][j] + "  ");
+                if(tmat_pos[i][j] == 0){
+                    System.out.print(" _ ");
+                }else
+                    System.out.print(" " + tmat_pos[i][j] + " ");
             }
             System.out.println();
         }
         System.out.println("\n");
-        System.out.println(" Score :: " + Score.score + "  Moves :: " + Score.Moves + "\n\n");
-    
+        System.out.println("\n Score: "+matrix.getScore()+"  Moves: "+matrix.getMoves());
+        System.out.println("\n");
     }
-    
-    public static void ran_pos(int[][] mat_pos) {
+
+    public static void ran_pos(Board matrix) {
+        int[][] tmat_pos = matrix.getMat_pos();
         point[] emp_spot = new point[25];
         int count = 0;
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if(mat_pos[i][j] == 0){
+                if(tmat_pos[i][j] == 0){
                     emp_spot[count] = new point(i, j);
                     count++;
                 }
             }
-        }   
+        }
         if(count>0){
             Random random = new Random();
             int ran_pos = random.nextInt(count);
             point chosen = emp_spot[ran_pos];
-            mat_pos[chosen.x][chosen.y] = 2;
+            tmat_pos[chosen.x][chosen.y] = 2;
         }
+        matrix.setMat_pos(tmat_pos);
     }
 }
