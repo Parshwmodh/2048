@@ -1,3 +1,5 @@
+//import java.util.HashMap;
+
 public class Board extends Score{
     private int[][] mat_pos = new int[5][5];
 
@@ -12,7 +14,7 @@ public class Board extends Score{
 }
 
 class Score{
-    private int score, Moves;
+    private int score, Moves, HighScore = 0;
     
     public int getScore() {
         return score;
@@ -30,6 +32,18 @@ class Score{
     public void setMoves(int Moves) {
         this.Moves = Moves;
     }
+    
+    public int getHighScore(){
+        return HighScore;
+    }
+    
+    public void setHighScore(int HighScore){
+        this.HighScore = HighScore;
+    }
+    
+    public void setHighScore(){
+        this.HighScore = score;
+    }
 }
 
 class point{
@@ -39,3 +53,15 @@ class point{
         this.y = y;
     }
 }
+
+// class point{
+//     int x, y;
+//     HashMap<int, int> map = new HashMap<>();
+//     public point(int x, int y){
+//         map.put(x, y);
+//     }
+    
+//     public point(int x){
+//         map.get(x);
+//     }
+// }

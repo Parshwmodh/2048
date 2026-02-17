@@ -8,6 +8,7 @@ public class Main{
         // if(choice.equals("Y") || choice.equals("y")){
         Board matrix = new Board();
         Gamelogic.ran_pos(matrix);
+        Gamelogic.loadGame(matrix);
         Gamelogic.display(matrix);
         do {
             Gamelogic.direction(matrix);
