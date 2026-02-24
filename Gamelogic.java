@@ -3,6 +3,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class Gamelogic{
 
@@ -207,7 +208,7 @@ public class Gamelogic{
                 case "D" -> swipeRight(tmat_pos);
                 case "EXIT" -> exit(matrix);
                 default -> {
-                    System.out.println("You have to Enter Valid Move (w,a,s,d)!");
+                    System.out.println("You have to Enter Valid Move (w,a,s,d,exit)!");
                 }
             }
         }
@@ -239,25 +240,55 @@ public class Gamelogic{
         System.out.println("\n");
     }
 
-    public static void ran_pos(Board matrix) {
+    public static void ran_pos(Board matrix){
         int[][] tmat_pos = matrix.getMat_pos();
-        point[] emp_spot = new point[25];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.clear();
         int count = 0;
-
-        for (int i = 0; i < 5; i++) {
+        
+        for(int i = 0; i < 5; i++){
             for (int j = 0; j < 5; j++) {
                 if(tmat_pos[i][j] == 0){
-                    emp_spot[count] = new point(i, j);
+                    int XY = (i*5)+j;
+                    map.put(count, XY);
                     count++;
                 }
             }
         }
+
         if(count>0){
             Random random = new Random();
             int ran_pos = random.nextInt(count);
-            point chosen = emp_spot[ran_pos];
-            tmat_pos[chosen.x][chosen.y] = 2;
+            int XY = map.get(ran_pos);
+            int x = XY/5;
+            int y = XY%5;
+            if(XY%2==0)
+                tmat_pos[x][y] = 2;
+            else
+                tmat_pos[x][y] = 4;
         }
         matrix.setMat_pos(tmat_pos);
     }
+
+    // public static void ran_pos(Board matrix) {
+    //     int[][] tmat_pos = matrix.getMat_pos();
+    //     point[] emp_spot = new point[25];
+    //     int count = 0;
+
+    //     for (int i = 0; i < 5; i++) {
+    //         for (int j = 0; j < 5; j++) {
+    //             if(tmat_pos[i][j] == 0){
+    //                 emp_spot[count] = new point(i, j);
+    //                 count++;
+    //             }
+    //         }
+    //     }
+    //     if(count>0){
+    //         Random random = new Random();
+    //         int ran_pos = random.nextInt(count);
+    //         point chosen = emp_spot[ran_pos];
+    //         tmat_pos[chosen.x][chosen.y] = 2;
+    //     }
+    //     matrix.setMat_pos(tmat_pos);
+    // }
 }
