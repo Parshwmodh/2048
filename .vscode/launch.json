@@ -9,8 +9,8 @@
             "type": "java",
             "name": "Current File",
             "request": "launch",
-            "mainClass": "App",
-            "vmArgs": "--module-path \"2048\\JavaFx_2048\\lib\" --add-modules javafx.controls,javafx.fxml"
+            "mainClass": "${file}",
+            "vmArgs": "--module-path lib --add-modules javafx.controls,javafx.fxml"
         }
     ]
 }
