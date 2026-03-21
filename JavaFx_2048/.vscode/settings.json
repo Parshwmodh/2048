@@ -1,0 +1,18 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        // "lib/**/*.jar"
+        "2048\\javaFx_2048\\lib\\javafx.base.jar",
+        "2048\\javaFx_2048\\lib\\javafx.controls.jar",
+        "2048\\javaFx_2048\\lib\\javafx.fxml.jar",
+        "2048\\javaFx_2048\\lib\\javafx.graphics.jar",
+        "2048\\javaFx_2048\\lib\\javafx.media.jar",
+        "2048\\javaFx_2048\\lib\\javafx.swing.jar",
+        "2048\\javaFx_2048\\lib\\javafx.web.jar",
+        "2048\\javaFx_2048\\lib\\javafx-swt.jar",
+        "2048\\javaFx_2048\\lib\\jdk.jsobject.jar",
+        "2048\\javaFx_2048\\lib\\jfx.incubator.input.jar",
+        "2048\\javaFx_2048\\lib\\jfx.incubator.richtext.jar"
+    ]
+}
